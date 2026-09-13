@@ -1,9 +1,3 @@
-databases:
-  - name: encuesta_competencias_db
-    databaseName: encuesta_competencias
-    plan: free
-    postgresMajorVersion: "16"
-
 services:
   - type: web
     name: encuesta_competencias
@@ -11,14 +5,16 @@ services:
     plan: free
     buildCommand: bundle install && bin/rails assets:precompile && bin/rails db:prepare
     startCommand: bin/rails server
+    healthCheckPath: /up
+    autoDeploy: true
     envVars:
       - key: DATABASE_URL
-        fromDatabase:
-          name: encuesta_competencias_db
-          property: connectionString
+        sync: false
       - key: RAILS_MASTER_KEY
         sync: false
       - key: RAILS_ENV
         value: production
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
       - key: WEB_CONCURRENCY
         value: "2"
