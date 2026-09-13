@@ -177,7 +177,7 @@ async function submitResults(){
    }
  };
  try{
-   const res=await fetch("/respuestas",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json","X-CSRF-Token":document.querySelector('meta[name="csrf-token"]').content},body:JSON.stringify(payload)});
+   const res=await fetch("/respuestas",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json"},body:JSON.stringify(payload)});
    const data=await res.json();
    if(res.ok&&data.ok){window.location.href="/gracias";return}
    errBox.textContent="No se pudo guardar tu evaluación: "+(data.errors?data.errors.join(". "):"error desconocido")+". Intenta de nuevo.";
