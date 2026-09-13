@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Evaluación AHP de Competencias</title>
+<style>
+:root{--primary:#6b46c1;--primary-light:#ede9fe;--primary-dark:#553c9a;--accent:#a78bfa;--text:#27222f;--muted:#6b6475;--border:#e5e0eb;--bg:#f8f7fb;--white:#fff;--danger:#b42318;--success:#147a4b}
+*{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif;line-height:1.45}
+.container{max-width:980px;margin:auto;padding:28px 18px 60px}.progress-wrap{position:sticky;top:0;z-index:20;background:rgba(248,247,251,.96);padding:12px 0 10px}.progress{height:8px;background:#e8e3ef;border-radius:99px;overflow:hidden}.progress-fill{height:100%;width:0;background:var(--primary);transition:.25s}.progress-label{text-align:center;font-size:13px;color:var(--muted);margin-top:7px}
+.card{background:var(--white);border:1px solid var(--border);border-radius:18px;padding:28px;box-shadow:0 5px 20px rgba(50,30,80,.06);margin-top:18px}.hero{text-align:center;padding:36px 28px}.hero h1{color:var(--primary);margin:0 0 12px;font-size:32px}.hero p{color:var(--muted);max-width:760px;margin:10px auto}.section-title{font-size:22px;margin:0 0 16px;color:var(--primary-dark)}.comp-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.comp-item{border:1px solid var(--border);border-radius:12px;padding:15px;background:#fff}.comp-title{font-weight:700;color:var(--primary-dark)}.comp-desc{font-size:13px;color:var(--muted);margin-top:5px}
+.form-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}.field label{display:block;font-size:13px;font-weight:700;margin-bottom:6px}.field input,.field select{width:100%;padding:12px;border:1px solid #cfc8da;border-radius:9px;background:#fff;font-size:15px}.field input.invalid,.field select.invalid{border:2px solid #d92d20}.error{display:none;background:#fff0ef;color:var(--danger);padding:12px;border-radius:9px;margin-top:14px}
+.btn{border:0;border-radius:10px;padding:12px 18px;font-weight:700;cursor:pointer;font-size:15px}.primary{background:var(--primary);color:#fff}.secondary{background:#fff;border:1px solid #cfc8da;color:var(--text)}.btn:disabled{opacity:.45;cursor:not-allowed}.actions{display:flex;justify-content:center;gap:10px;margin-top:24px}
+.step{display:none}.step.active{display:block}.pair-header{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:16px}.pair-col{padding:18px;border:1px solid var(--border);border-radius:14px;min-height:145px}.pair-name{font-size:20px;font-weight:800;color:var(--primary-dark)}.pair-desc{font-size:13px;color:var(--muted);margin-top:8px}.vs{background:var(--primary-light);color:var(--primary-dark);font-weight:800;padding:8px 10px;border-radius:50%}
+.scale-title{text-align:center;margin:26px 0 8px;font-weight:700}.scale-row{display:flex;justify-content:center;gap:5px;flex-wrap:wrap}.scale-btn{min-width:42px;height:42px;border:1px solid #cfc8da;background:#fff;border-radius:8px;font-weight:800;cursor:pointer}.scale-btn:hover,.scale-btn.selected{background:var(--primary);color:#fff;border-color:var(--primary)}.scale-btn.equal{min-width:48px;background:var(--primary-light);color:var(--primary-dark)}.legend{display:grid;grid-template-columns:1fr auto 1fr;font-size:12px;color:var(--muted);margin-top:9px}.legend .right{text-align:right}.hint{text-align:center;color:var(--muted);margin-top:14px;min-height:22px}.hint.answered{color:var(--primary-dark);font-weight:700}
+.nav{display:flex;justify-content:space-between;margin-top:26px}.results-metrics{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{background:var(--primary-light);border-radius:12px;padding:18px;text-align:center}.metric small{display:block;color:var(--muted)}.metric strong{font-size:24px;color:var(--primary-dark)}.status{padding:14px;border-radius:10px;margin:18px 0;font-weight:700}.ok{background:#eaf7f0;color:var(--success)}.warn{background:#fff4e5;color:#9a6700}.rank-item{display:grid;grid-template-columns:38px 1fr 75px;align-items:center;gap:10px;margin:14px 0}.rank-num{font-weight:800;color:var(--primary-dark)}.rank-name{font-weight:700;margin-bottom:5px}.bar{height:12px;background:#eeeaf4;border-radius:99px;overflow:hidden}.fill{height:100%;background:var(--primary)}.rank-pct{text-align:right;font-weight:800}.summary{background:#faf8ff;border-left:4px solid var(--primary);padding:16px;border-radius:8px}.small{font-size:12px;color:var(--muted)}.hidden{display:none}
+@media(max-width:680px){.container{padding:18px 12px 45px}.hero h1{font-size:26px}.comp-grid,.form-grid,.results-metrics{grid-template-columns:1fr}.pair-header{grid-template-columns:1fr}.vs{justify-self:center}.legend{grid-template-columns:1fr}.legend .right{text-align:left;margin-top:3px}.scale-btn{min-width:37px}.card{padding:20px}.nav{gap:8px}.nav .btn{flex:1}}
+@media print{.progress-wrap,.actions,.nav{display:none!important}.card{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="progress-wrap"><div class="progress"><div id="progressFill" class="progress-fill"></div></div><div id="progressLabel" class="progress-label">Introducción</div></div>
+
+<section id="intro" class="step active">
+<div class="card hero">
+<h1>Evaluación de Competencias AHP</h1>
+<p>Esta evaluación utiliza el método Analytic Hierarchy Process (AHP) para identificar la prioridad relativa de siete competencias profesionales.</p>
+<p>No existen respuestas correctas o incorrectas. En cada comparación selecciona cuál competencia consideras más importante y con qué intensidad.</p>
+</div>
+<div class="card">
+<h2 class="section-title">Competencias</h2><div id="compList" class="comp-grid"></div>
+</div>
+<div class="card">
+<h2 class="section-title">Escala AHP</h2>
+<p><b>1</b> = igualmente importante · <b>3</b> = moderadamente · <b>5</b> = fuertemente · <b>7</b> = muy fuertemente · <b>9</b> = extremadamente. Los valores 2, 4, 6 y 8 son niveles intermedios.</p>
+</div>
+<div class="card">
+<h2 class="section-title">Datos del evaluador</h2>
+<div class="form-grid">
+<div class="field"><label>Nombre completo *</label><input id="name"></div>
+<div class="field"><label>Puesto actual *</label><input id="role"></div>
+<div class="field"><label>Sexo *</label><select id="sex"><option value="">Selecciona</option><option>F</option><option>M</option><option>Other</option><option>Prefer not to say</option></select></div>
+<div class="field"><label>Edad (18–99) *</label><input id="age" type="number" min="18" max="99"></div>
+<div class="field"><label>Escolaridad *</label><input id="edu"></div>
+<div class="field"><label>Nacionalidad *</label><input id="nation"></div>
+<div class="field"><label>Industria *</label><input id="industry"></div>
+<div class="field"><label>Años gestionando proyectos *</label><input id="years"></div>
+<div class="field"><label>Tamaño de proyectos *</label><input id="size"></div>
+</div>
+<div id="introError" class="error"></div>
+<div class="actions"><button class="btn primary" onclick="start()">Comenzar evaluación</button></div>
+</div>
+</section>
+
+<div id="pairs"></div>
+
+<section id="results" class="step">
+<div class="card">
+<h2 class="section-title">Resultado de la evaluación</h2>
+<div id="evaluatorSummary" class="small"></div>
+<div class="results-metrics" style="margin-top:18px">
+<div class="metric"><small>λ max</small><strong id="lambda">—</strong></div>
+<div class="metric"><small>CI</small><strong id="ci">—</strong></div>
+<div class="metric"><small>RI (n=7)</small><strong>1.32</strong></div>
+</div>
+<div id="consistency" class="status"></div>
+</div>
+<div class="card"><h2 class="section-title">Ranking de competencias</h2><div id="ranking"></div></div>
+<div class="card"><h2 class="section-title">Interpretación ejecutiva</h2><div id="interpretation" class="summary"></div></div>
+<div class="card">
+<p><b>Nota metodológica:</b> una inconsistencia AHP no significa que las respuestas sean inválidas. El ranking puede calcularse, pero cuando CR ≥ 10% debe revisarse antes de considerarlo definitivo.</p>
+<p class="small">El CR se calcula internamente para el control de calidad, aunque no se muestra como métrica principal al evaluador.</p>
+<div id="saveError" class="error"></div>
+<div class="actions">
+<button class="btn secondary" onclick="restart()">Reiniciar</button>
+<button id="sendBtn" class="btn primary" onclick="submitResults()">Enviar resultados</button>
+</div>
+</div>
+</section>
+</div>
+
+<script>
+const competencies=[
+["C1","Liderazgo","Toma de decisiones, Iniciativa, Compromiso, Orientación al logro y Gestión."],
+["C2","Auto-gestión","Conciencia política y cultural, Conciencia, Autoconciencia, Visión, Resiliencia emocional y Cognición."],
+["C3","Hab. Interpersonales","Trabajo en equipo, Relaciones interpersonales, Perseverancia y Flexibilidad."],
+["C4","Comunicación","Negociación, Relación con el cliente, Comunicación y Gestión de conflictos."],
+["C5","Habilidades técnicas","Experiencia, Experiencia técnica y Autoridad."],
+["C6","Herramientas Productivas","Organización, Uso de la tecnología y Capacitación."],
+["C7","Hab. Gerenciales","Resolución de problemas, Delegación y Gestión del tiempo."]
+];
+const RI=1.32;
+const pairs=[]; for(let i=0;i<7;i++)for(let j=i+1;j<7;j++)pairs.push([i,j]);
+let answers=Array(21).fill(null), current=-1, result=null;
+const compList=document.getElementById("compList");
+competencies.forEach((c,i)=>compList.innerHTML+=`<div class="comp-item"><div class="comp-title">${i+1}. ${c[1]}</div><div class="comp-desc">${c[2]}</div></div>`);
+
+const pairsDiv=document.getElementById("pairs");
+pairs.forEach(([i,j],k)=>{
+ const d=document.createElement("section"); d.className="step"; d.id="pair"+k;
+ const buttons=[...Array(8)].map((_,x)=>9-x).concat(["="],[2,3,4,5,6,7,8,9]);
+ d.innerHTML=`<div class="card">
+ <div class="pair-header"><div class="pair-col"><div class="pair-name">${competencies[i][1]}</div><div class="pair-desc">${competencies[i][2]}</div></div><div class="vs">vs</div><div class="pair-col"><div class="pair-name">${competencies[j][1]}</div><div class="pair-desc">${competencies[j][2]}</div></div></div>
+ <div class="scale-title">¿Cuál es más importante para ti?</div><div class="scale-row">${buttons.map(v=>`<button class="scale-btn ${v==="="? "equal":""}" data-k="${k}" data-v="${v}" onclick="answer(${k},'${v}',this)">${v}</button>`).join("")}</div>
+ <div class="legend"><div>← ${competencies[i][1]} más importante</div><div style="text-align:center">Igual</div><div class="right">${competencies[j][1]} más importante →</div></div>
+ <div id="hint${k}" class="hint">Selecciona una opción para continuar</div>
+ <div class="nav"><button class="btn secondary" onclick="prev()">← Anterior</button><button id="next${k}" class="btn primary" disabled onclick="next()">Siguiente →</button></div>
+ </div>`;
+ pairsDiv.appendChild(d);
+});
+
+function updateProgress(){
+ const pct=current<0?0:(current===21?100:((current+1)/22)*100);
+ document.getElementById("progressFill").style.width=pct+"%";
+ document.getElementById("progressLabel").textContent=current<0?"Introducción":current===21?"Resultados":`Comparación ${current+1} de 21`;
+}
+function show(n){
+ document.querySelectorAll(".step").forEach(x=>x.classList.remove("active"));
+ if(n<0)document.getElementById("intro").classList.add("active");
+ else if(n===21)document.getElementById("results").classList.add("active");
+ else document.getElementById("pair"+n).classList.add("active");
+ current=n; updateProgress(); window.scrollTo({top:0,behavior:"smooth"});
+}
+function start(){
+ const ids=["name","role","sex","age","edu","nation","industry","years","size"], missing=[];
+ ids.forEach(id=>document.getElementById(id).classList.remove("invalid"));
+ ids.forEach(id=>{let e=document.getElementById(id);if(!e.value.trim()){e.classList.add("invalid");missing.push(id)}});
+ const age=Number(document.getElementById("age").value); if(age<18||age>99||!Number.isInteger(age)){document.getElementById("age").classList.add("invalid");missing.push("edad")}
+ if(missing.length){document.getElementById("introError").style.display="block";document.getElementById("introError").textContent="Completa todos los campos obligatorios y verifica que la edad esté entre 18 y 99.";return}
+ document.getElementById("introError").style.display="none"; show(0);
+}
+function answer(k,v,btn){
+ const idx=[...btn.parentElement.children].indexOf(btn);
+ answers[k]={side:idx<8?"A":idx===8?"=":"B",intensity:v==="="?1:Number(v)};
+ btn.parentElement.querySelectorAll(".scale-btn").forEach(b=>b.classList.remove("selected"));btn.classList.add("selected");
+ const [i,j]=pairs[k]; const a=answers[k];
+ document.getElementById("hint"+k).textContent=a.side==="="?`${competencies[i][1]} y ${competencies[j][1]} son igualmente importantes.`:`${a.side==="A"?competencies[i][1]:competencies[j][1]} tiene una importancia ${a.intensity} frente a ${a.side==="A"?competencies[j][1]:competencies[i][1]}.`;
+ document.getElementById("hint"+k).classList.add("answered");document.getElementById("next"+k).disabled=false;
+}
+function next(){if(current<0)show(0);else if(current<20)show(current+1);else if(current===20){compute();show(21)}}
+function prev(){if(current>0)show(current-1);else if(current===0)show(-1)}
+function compute(){
+ const A=Array.from({length:7},()=>Array(7).fill(1));
+ pairs.forEach(([i,j],k)=>{const a=answers[k];let v=a.side==="A"?a.intensity:a.side==="B"?1/a.intensity:1;A[i][j]=v;A[j][i]=1/v});
+ const sums=A[0].map((_,j)=>A.reduce((s,r)=>s+r[j],0));
+ const w=A.map(r=>r.reduce((s,v,j)=>s+v/sums[j],0)/7);
+ const Aw=A.map(r=>r.reduce((s,v,j)=>s+v*w[j],0));
+ const lmax=Aw.reduce((s,v,i)=>s+v/w[i],0)/7;
+ const CI=(lmax-7)/6, CR=CI/RI;
+ result={A,w,lmax,CI,CR};
+ render();
+}
+function render(){
+ document.getElementById("lambda").textContent=result.lmax.toFixed(4);
+ document.getElementById("ci").textContent=result.CI.toFixed(4);
+ const consistent=result.CR<.10, box=document.getElementById("consistency");
+ box.className="status "+(consistent?"ok":"warn");
+ box.textContent=consistent?"✓ Consistencia aceptable":"⚠ Las comparaciones presentan inconsistencia superior al umbral recomendado. Revisa las respuestas antes de considerar definitivo el ranking.";
+ const rank=competencies.map((c,i)=>({name:c[1],w:result.w[i]})).sort((a,b)=>b.w-a.w);
+ document.getElementById("ranking").innerHTML=rank.map((r,i)=>`<div class="rank-item"><div class="rank-num">${i+1}</div><div><div class="rank-name">${r.name}</div><div class="bar"><div class="fill" style="width:${(r.w*100).toFixed(2)}%"></div></div></div><div class="rank-pct">${(r.w*100).toFixed(2)}%</div></div>`).join("");
+ const top=rank[0], second=rank[1], low=rank[6];
+ document.getElementById("interpretation").innerHTML=`La competencia con mayor prioridad relativa es <b>${top.name}</b>, con <b>${(top.w*100).toFixed(2)}%</b>. Le sigue <b>${second.name}</b> con <b>${(second.w*100).toFixed(2)}%</b>. La competencia con menor prioridad relativa es <b>${low.name}</b>, con <b>${(low.w*100).toFixed(2)}%</b>.<br><br>Este resultado representa prioridades relativas expresadas en las comparaciones; no constituye por sí mismo un diagnóstico de fortalezas o debilidades.`;
+ const d={name:name.value,role:role.value,sex:sex.value,age:age.value,edu:edu.value,nation:nation.value,industry:industry.value,years:years.value,size:size.value};
+ document.getElementById("evaluatorSummary").textContent=`Evaluador: ${d.name} · Puesto: ${d.role} · ${new Date().toLocaleString("es-MX")}`;
+}
+async function submitResults(){
+ const btn=document.getElementById("sendBtn"), errBox=document.getElementById("saveError");
+ errBox.style.display="none"; btn.disabled=true; btn.textContent="Enviando…";
+ const payload={
+   response:{
+     name:name.value, role:role.value, sex:sex.value, age:Number(age.value),
+     edu:edu.value, nation:nation.value, industry:industry.value, years:years.value, size:size.value,
+     lmax:result.lmax, ci:result.CI, cr:result.CR,
+     weights:competencies.map((c,i)=>({competency:c[1],weight:Number(result.w[i].toFixed(6))})),
+     answers:pairs.map(([i,j],k)=>({pair:k+1,left:competencies[i][1],right:competencies[j][1],side:answers[k].side,intensity:answers[k].intensity}))
+   }
+ };
+ try{
+   const res=await fetch("/respuestas",{method:"POST",headers:{"Content-Type":"application/json","Accept":"application/json","X-CSRF-Token":document.querySelector('meta[name="csrf-token"]').content},body:JSON.stringify(payload)});
+   const data=await res.json();
+   if(res.ok&&data.ok){window.location.href="/gracias";return}
+   errBox.textContent="No se pudo guardar tu evaluación: "+(data.errors?data.errors.join(". "):"error desconocido")+". Intenta de nuevo.";
+ }catch(e){
+   errBox.textContent="No se pudo conectar con el servidor. Verifica tu conexión e intenta de nuevo.";
+ }
+ errBox.style.display="block"; btn.disabled=false; btn.textContent="Enviar resultados";
+}
+function restart(){answers=Array(21).fill(null);result=null;document.querySelectorAll(".scale-btn").forEach(b=>b.classList.remove("selected"));document.querySelectorAll('[id^="next"]').forEach(b=>b.disabled=true);show(-1)}
+updateProgress();
+</script>
+</body>
+</html>
