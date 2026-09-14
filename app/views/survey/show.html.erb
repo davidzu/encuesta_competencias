@@ -161,7 +161,7 @@ function render(){
  document.getElementById("ranking").innerHTML=rank.map((r,i)=>`<div class="rank-item"><div class="rank-num">${i+1}</div><div><div class="rank-name">${r.name}</div><div class="bar"><div class="fill" style="width:${(r.w*100).toFixed(2)}%"></div></div></div><div class="rank-pct">${(r.w*100).toFixed(2)}%</div></div>`).join("");
  const top=rank[0], second=rank[1], low=rank[6];
  document.getElementById("interpretation").innerHTML=`La competencia con mayor prioridad relativa es <b>${top.name}</b>, con <b>${(top.w*100).toFixed(2)}%</b>. Le sigue <b>${second.name}</b> con <b>${(second.w*100).toFixed(2)}%</b>. La competencia con menor prioridad relativa es <b>${low.name}</b>, con <b>${(low.w*100).toFixed(2)}%</b>.<br><br>Este resultado representa prioridades relativas expresadas en las comparaciones; no constituye por sí mismo un diagnóstico de fortalezas o debilidades.`;
- const d={name:name.value,role:role.value,sex:sex.value,age:age.value,edu:edu.value,nation:nation.value,industry:industry.value,years:years.value,size:size.value};
+   const d={name:document.getElementById("name").value,role:role.value,sex:sex.value,age:age.value,edu:edu.value,nation:nation.value,industry:industry.value,years:years.value,size:size.value};
  document.getElementById("evaluatorSummary").textContent=`Evaluador: ${d.name} · Puesto: ${d.role} · ${new Date().toLocaleString("es-MX")}`;
 }
 async function submitResults(){
@@ -169,7 +169,7 @@ async function submitResults(){
  errBox.style.display="none"; btn.disabled=true; btn.textContent="Enviando…";
  const payload={
    response:{
-     name:name.value, role:role.value, sex:sex.value, age:Number(age.value),
+      name:document.getElementById("name").value, role:role.value, sex:sex.value, age:Number(age.value),
      edu:edu.value, nation:nation.value, industry:industry.value, years:years.value, size:size.value,
      lmax:result.lmax, ci:result.CI, cr:result.CR,
      weights:competencies.map((c,i)=>({competency:c[1],weight:Number(result.w[i].toFixed(6))})),
